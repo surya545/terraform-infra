@@ -1,0 +1,78 @@
+Resources:
+  VPC:
+    Name: api-server-vpc
+    CIDR: 10.0.0.0/16
+    Tags: 
+      Name: "api-server-vpc"
+    TagsAll:
+      Name: "api-server-vpc"
+    Subnets:
+      - Name: api-server-Public-Sub
+        Properties:
+          CIDR: 10.0.0.0/20
+          AZ: "ap-south-1a"
+          Tags: 
+            Name: "api-server-Public-Sub"
+          TagsAll:
+            Name: "api-server-Public-Sub"
+    IGW:
+      - Name: api-server-IGW
+        Properties:
+          Tags:
+            Name: "api-server-igw"
+          TagsAll:
+            Name: "api-server-igw"
+    EIP:
+      - Name : api-server-EIP
+        Properties:
+          Tags:
+            Name: "api-server-EIP"
+          TagsAll:
+            Name: "api-server-EIP"
+    RouteTables:
+      - Name: api-server-Public-RT
+        Properties:
+          Associations:
+            Subnets:
+              -  api-server-Public-Sub
+            IGW:
+              - api-server-IGW
+          Tags: 
+            Name: "api-server-Public-RT"
+          TagsAll:
+            Name: "api-server-Public-RT"
+    SecurityGroup:
+      - Name: api-server-SG
+        Properties:
+          Description: Security Group for api-server
+          Ingress:
+            - CIDR: ["0.0.0.0/0",]
+              From: 80
+              To: 80
+              Protocol: tcp
+            - CIDR: ["0.0.0.0/0",]
+              From: 22
+              To: 22
+              Protocol: tcp
+          Egress:
+            - CIDR: ["0.0.0.0/0",]
+              From: 0
+              To: 0
+          Tags: 
+            Name: "api-server-SG"
+          TagsAll:
+            Name: "api-server-SG"
+  EC2:
+    -  Name: "api-server-instance"
+       Properties:
+         AMI: "ami-0a7cf821b91bcccbc"
+         InstanceType: "t2.micro"
+         KeyName: "xalts"
+         Subnet: "api-server-Public-Sub"
+         SecurityGroup: ["api-server-SG"]
+         ElasticIP: api-server-EIP
+         UserData: "api-server-userdata.sh"
+         Tags: 
+           Name: "api-server-instance"
+         TagsAll:
+           Name: "api-server-instance"
