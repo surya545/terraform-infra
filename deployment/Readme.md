@@ -23,7 +23,7 @@ To use this Terraform configuration:
 1. Clone the repository to your local machine.
 2. Ensure that Terraform is installed on your system.
 3. Configure your AWS credentials by using the `aws configure` command.
-4. Update the `services.yml` file with your desired AWS infrastructure configuration.
+4. Navigate to the `deployment` directory containing the Terraform files.
 5. Execute `terraform init` to initialize the Terraform environment.
 6. Run `terraform plan` to review the proposed infrastructure changes.
 7. Execute `terraform apply` to provision the AWS resources based on the defined configuration.
